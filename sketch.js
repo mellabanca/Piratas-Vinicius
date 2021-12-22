@@ -1,10 +1,16 @@
+var engine, world, ground;
+var fundoimg;
+var dftorre, torreimg;
+var torreangulo;
+var canhao;
+var baladoCanhao;
+
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
-var engine, world, ground;
-var fundoimg;
-var dftorre, torreimg;
+
 
 
 function preload() {
@@ -27,7 +33,10 @@ function setup() {
 
   dftorre = Bodies.rectangle(160, 350, 160, 310, options);
   World.add(world,dftorre);
- 
+ torreangulo = 20;
+ canhao = new Canhao(180,110,130,100,torreangulo);
+
+ baladoCanhao = new BaladoCanhao(canhao.x, canhao.y);
 }
 
 function draw() {
@@ -41,4 +50,9 @@ function draw() {
   imageMode(CENTER);
   image(torreimg, dftorre.position.x, dftorre.position.y, 160, 310);
   pop();
+  
+
+
+  canhao.display();
+  baladoCanhao.display();
 }
