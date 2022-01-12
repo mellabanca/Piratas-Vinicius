@@ -11,7 +11,26 @@ const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
+//Códigos de Revisão
+//Exemplo de matriz
+var matriz1 = [1,2,3,4,5];
+//console.log(matriz1[2]);
 
+//Matriz com diferentes tipos de dados
+var matriz2 = ["Vinicius", 53, true];
+//console.log(matriz2[2]);
+
+//Matriz feita de matrizes
+var matriz3 = [[1,2],[3,4],[5,6]];
+//console.log(matriz3[0][1]+" "+matriz3[2][1]);
+
+//Como colocar e tirar elementos da matriz
+matriz2.push("Melissa");
+matriz2.push(27);
+//console.log(matriz2);
+matriz2.pop();
+matriz2.pop();
+//console.log(matriz2);
 
 function preload() {
   fundoimg = loadImage("./assets/background.gif");
@@ -33,7 +52,8 @@ function setup() {
 
   dftorre = Bodies.rectangle(160, 350, 160, 310, options);
   World.add(world,dftorre);
- torreangulo = 20;
+  angleMode(DEGREES);
+ torreangulo = 15;
  canhao = new Canhao(180,110,130,100,torreangulo);
 
  baladoCanhao = new BaladoCanhao(canhao.x, canhao.y);
@@ -55,4 +75,9 @@ function draw() {
 
   canhao.display();
   baladoCanhao.display();
+}
+function keyReleased(){
+if (keyCode ===DOWN_ARROW){
+baladoCanhao.Bala();
+}
 }
