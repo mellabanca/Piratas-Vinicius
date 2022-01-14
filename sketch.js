@@ -3,8 +3,8 @@ var fundoimg;
 var dftorre, torreimg;
 var torreangulo;
 var canhao;
-var baladoCanhao;
-
+var balas = [];
+var navio;
 
 const Engine = Matter.Engine;
 const World = Matter.World;
@@ -56,7 +56,8 @@ function setup() {
  torreangulo = 15;
  canhao = new Canhao(180,110,130,100,torreangulo);
 
- baladoCanhao = new BaladoCanhao(canhao.x, canhao.y);
+ navio = new Navio(width-79, height-60, 170, 170, -80);
+
 }
 
 function draw() {
@@ -70,14 +71,39 @@ function draw() {
   imageMode(CENTER);
   image(torreimg, dftorre.position.x, dftorre.position.y, 160, 310);
   pop();
-  
-
 
   canhao.display();
-  baladoCanhao.display();
+  for(var bola = 0;bola< balas.length;bola++){
+   balasMostrar(balas[bola],bola);
+  }
+  
+  Matter.Body.setVelocity(navio.body, {x:-0.9, y:0});
+
+  navio.display();
+
 }
 function keyReleased(){
 if (keyCode ===DOWN_ARROW){
-baladoCanhao.Bala();
+balas[balas.length-1].Bala();
 }
 }
+function keyPressed(){
+if (keyCode === DOWN_ARROW){
+  var baladoCanhao = new BaladoCanhao(canhao.x,canhao.y);
+
+  balas.push(baladoCanhao);
+}
+}
+function balasMostrar(bala,i){
+if (bala){
+  bala.display();
+}
+}
+
+
+
+
+
+
+
+
