@@ -1,15 +1,16 @@
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Constraint = Matter.Constraint;
+
 var engine, world, ground;
 var fundoimg;
 var dftorre, torreimg;
 var torreangulo;
 var canhao;
-var balas = [];
 var navio;
-
-const Engine = Matter.Engine;
-const World = Matter.World;
-const Bodies = Matter.Bodies;
-const Constraint = Matter.Constraint;
+var balas = [];
+var navios = [];
 
 //Códigos de Revisão
 //Exemplo de matriz
@@ -47,16 +48,16 @@ function setup() {
     isStatic: true
   }
   
-  ground = Bodies.rectangle(0, height-1, width-2, 1, options);
+  ground = Bodies.rectangle(0, height-1, width*2, 1, options);
   World.add(world,ground);
 
   dftorre = Bodies.rectangle(160, 350, 160, 310, options);
   World.add(world,dftorre);
-  angleMode(DEGREES);
- torreangulo = 15;
- canhao = new Canhao(180,110,130,100,torreangulo);
 
- navio = new Navio(width-79, height-60, 170, 170, -80);
+  angleMode(DEGREES);
+  torreangulo = 15;
+
+  canhao = new Canhao(180,110,130,100,torreangulo);
 
 }
 
@@ -67,26 +68,27 @@ function draw() {
   Engine.update(engine);
   
   rect(ground.position.x, ground.position.y, width*2, 1); 
+
   push();
   imageMode(CENTER);
   image(torreimg, dftorre.position.x, dftorre.position.y, 160, 310);
   pop();
 
-  canhao.display();
+  mostrarPiratas();
+
   for(var bola = 0;bola< balas.length;bola++){
    balasMostrar(balas[bola],bola);
+   detectorDeColisao(bola);
   }
-  
-  Matter.Body.setVelocity(navio.body, {x:-0.9, y:0});
-
-  navio.display();
-
+  canhao.display();
 }
+
 function keyReleased(){
 if (keyCode ===DOWN_ARROW){
 balas[balas.length-1].Bala();
 }
 }
+
 function keyPressed(){
 if (keyCode === DOWN_ARROW){
   var baladoCanhao = new BaladoCanhao(canhao.x,canhao.y);
@@ -94,16 +96,54 @@ if (keyCode === DOWN_ARROW){
   balas.push(baladoCanhao);
 }
 }
+
 function balasMostrar(bala,i){
 if (bala){
   bala.display();
+  if(bala.body.position.x >= width || bala.body.position.y >= height-50){
+    bala.remove(i);
+  }
 }
 }
 
+function mostrarPiratas(){
+  if (navios.length > 0){
+    if (navios[navios.length-1].body.position.x < width-300 ||
+        navios[navios.length-1] === undefined){
+    var posicoes = [-40,-60,-70,-20];
+    var posicao = random(posicoes);
+    var navio = new Navio(width,height-100,170,170,posicao);
+  
+    navios.push(navio);
+    
+    }
+   
+    for(var i = 0; i < navios.length; i++){
+     if (navios[i]){
+      Matter.Body.setVelocity(navios[i].body, {x:-0.9, y:0});
+      navios[i].display();
+     }
+   }
+  } else {
+    var navio = new Navio(width,height-60,170,170,-60);
+  navios.push(navio);
+  }
+}
 
+function detectorDeColisao(index){
+  for(var i = 0; i < navios.length; i++){
+    if(balas[index] !== undefined && navios[i] !== undefined){
+      var colisao = Matter.SAT.collides(balas[index].body, navios[i].body);
 
+      if(colisao.collided){
+        navios[i].remove(i);
 
-
+        Matter.World.remove(world, balas[index].body);
+        delete balas[index];
+      }
+    }
+  }
+}
 
 
 
