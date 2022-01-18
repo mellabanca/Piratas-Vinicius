@@ -21,10 +21,4 @@ class Navio {
         image(this.image, 0, this.navioPosicao, this.lar, this.alt);
         pop();
     }
-
-    remove(index){
-        setTimeout(() => {
-            Matter.World.remove(world, navios[index].body);
-            delete navios[index];}, 2000);
-    }
 }

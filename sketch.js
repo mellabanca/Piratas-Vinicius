@@ -78,7 +78,6 @@ function draw() {
 
   for(var bola = 0;bola< balas.length;bola++){
    balasMostrar(balas[bola],bola);
-   detectorDeColisao(bola);
   }
   canhao.display();
 }
@@ -100,9 +99,6 @@ if (keyCode === DOWN_ARROW){
 function balasMostrar(bala,i){
 if (bala){
   bala.display();
-  if(bala.body.position.x >= width || bala.body.position.y >= height-50){
-    bala.remove(i);
-  }
 }
 }
 
@@ -130,20 +126,7 @@ function mostrarPiratas(){
   }
 }
 
-function detectorDeColisao(index){
-  for(var i = 0; i < navios.length; i++){
-    if(balas[index] !== undefined && navios[i] !== undefined){
-      var colisao = Matter.SAT.collides(balas[index].body, navios[i].body);
 
-      if(colisao.collided){
-        navios[i].remove(i);
-
-        Matter.World.remove(world, balas[index].body);
-        delete balas[index];
-      }
-    }
-  }
-}
 
 
 
