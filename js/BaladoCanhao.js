@@ -10,6 +10,25 @@ class BaladoCanhao {
         World.add(world,this.body);
     }
 
+    remover(index){
+        Matter.Body.setVelocity(this.body,{x:0,y:0})
+           setTimeout(()=>{
+               Matter.World.remove(world,this.body);
+               delete balas[index];
+               
+           }, 1000);
+   
+       }
+
+    Bala(){
+    var nvAngulo = canhao.angulo-28;
+    nvAngulo = nvAngulo*(3.14/180);
+    var velocidade = p5.Vector.fromAngle(nvAngulo);
+    velocidade.mult(0.5);
+       Matter.Body.setStatic(this.body,false);
+   Matter.Body.setVelocity(this.body,{x:velocidade.x*(180/3.14),y:velocidade.y*(180/3.14)});
+    }
+
     display(){
         var pos = this.body.position;
         push();
@@ -24,13 +43,5 @@ class BaladoCanhao {
         image(this.image,this.rastro[i][0],this.rastro[i][1],5,5);
         }
     }
-
-    Bala(){
-    var nvAngulo = canhao.angulo-28;
-    nvAngulo = nvAngulo*(3.14/180);
-    var velocidade = p5.Vector.fromAngle(nvAngulo);
-    velocidade.mult(0.5);
-       Matter.Body.setStatic(this.body,false);
-   Matter.Body.setVelocity(this.body,{x:velocidade.x*(180/3.14),y:velocidade.y*(180/3.14)});
-    }
+    
 }
