@@ -3,15 +3,26 @@ class BaladoCanhao {
         var options = {
             isStatic: true
         }
+        this.velocidade = 0.05;
+        
+        this.bolaTriste = false;
         this.r = 30;
         this.body = Bodies.circle(x,y,this.r,options);
         this.image = loadImage("./assets/cannonball.png");
+        this.animacao = [this.image];
         this.rastro = [];
         World.add(world,this.body);
     }
-
+    animar(){
+        this.velocidade += 0.05;
+    }
     remover(index){
+        this.bolaTriste = true;
         Matter.Body.setVelocity(this.body,{x:0,y:0})
+        this.animacao = bolaAnim;
+        this.velocidade = 0.05
+        this.r = 150;
+
            setTimeout(()=>{
                Matter.World.remove(world,this.body);
                delete balas[index];
@@ -30,12 +41,17 @@ class BaladoCanhao {
     }
 
     display(){
+        var angulo = this.body.angle;
         var pos = this.body.position;
+        var indice = floor(this.velocidade % this.animacao.length);
+        
         push();
+        translate(pos.x,pos.y);
+        rotate(angulo);
         imageMode(CENTER);
-        image(this.image, pos.x, pos.y, this.r, this.r);
+        image(this.animacao[indice],0,0, this.r, this.r);
         pop();
-        if (this.body.velocity.x > 0 && pos.x >10){
+        if (this.body.velocity.x > 0 && pos.x >10 && !this.bolaTriste){
         var posicao = [pos.x,pos.y];
         this.rastro.push(posicao);
         }

@@ -1,6 +1,6 @@
 class Navio {
     constructor(x, y, lar, alt, navioPos, navioAnim){
-        
+        this.estatriste = false;
         this.body = Bodies.rectangle(x,y,lar,alt);
         this.lar = lar;
         this.alt = alt;
@@ -16,7 +16,12 @@ class Navio {
     }
 
     remover(index){
-
+        this.animacao = navioqAnimacao;
+        this.velocidade = 0.05;
+        this.lar = 300;
+        this.alt = 300;
+        this.estatriste = true;
+    
         setTimeout(()=>{
             Matter.World.remove(world,navios[index].body);
             delete navios[index];
